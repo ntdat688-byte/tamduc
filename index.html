@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuyển Dụng Nhân Sự| Hệ Thống Giáo Dục Tâm Đức</title>
+    <title>Tuyển Dụng Tài Năng Trẻ | Hệ Thống Giáo Dục Tâm Đức</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -204,7 +204,7 @@
             </div>
 
             <!-- Form Content -->
-            <form id="recruitmentForm" class="p-5 md:p-8">
+            <form id="recruitmentForm" class="p-5 md:p-8" novalidate>
                 
                 <!-- STEP 1: THÔNG TIN CÁ NHÂN -->
                 <div id="step1" class="step-container active">
@@ -726,6 +726,26 @@
                     }
                 }
             });
+
+            // Validate riêng cho Step 2 (Kiểm tra xem Trợ giảng đã chọn Cấp học chưa)
+            if (step === 2) {
+                const roleInput = document.querySelector('input[name="role"]:checked');
+                if (roleInput && (roleInput.value === 'TRỢ GIẢNG ĐÀO TẠO' || roleInput.value === 'TRỢ GIẢNG PART - TIME')) {
+                    const gradeChecked = document.querySelector('input[name="gradeLevel"]:checked');
+                    if (!gradeChecked) {
+                        isValid = false;
+                        const teachingExtras = document.getElementById('teachingExtras');
+                        teachingExtras.classList.remove('border-blue-100', 'bg-blue-50/50');
+                        teachingExtras.classList.add('border-accent-red', 'bg-red-50');
+                        
+                        const radios = document.querySelectorAll('input[name="gradeLevel"]');
+                        radios.forEach(r => r.addEventListener('change', () => {
+                            teachingExtras.classList.remove('border-accent-red', 'bg-red-50');
+                            teachingExtras.classList.add('border-blue-100', 'bg-blue-50/50');
+                        }, {once: true}));
+                    }
+                }
+            }
 
             // Validate riêng cho Step 4 (Radio groups)
             if (step === 4) {
