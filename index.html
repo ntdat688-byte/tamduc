@@ -929,7 +929,7 @@
             formData.append("Xử lý tình huống", (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') ? document.getElementById('q_situation_teaching').value : document.getElementById('q_situation_operation').value);
             formData.append("Mục tiêu tương lai", document.getElementById('q_discipline').value);
 
-            if (GOOGLE_APP_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbztTvLuA90MZnXcCs7iBYs4tydhxUL9TOPwuqzPWJB5jXMWsjrP72JPr0UalQZ01bdK/exec' || GOOGLE_APP_SCRIPT_URL.trim() === '') {
+            if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE' || GOOGLE_APP_SCRIPT_URL.trim() === '') {
                 alert("Bạn chưa dán GOOGLE_APP_SCRIPT_URL vào code.");
                 btn.innerHTML = originalText;
                 btn.disabled = false;
