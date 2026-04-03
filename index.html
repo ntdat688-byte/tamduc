@@ -210,7 +210,7 @@
                 <div id="step1" class="step-container active">
                     <div class="mb-6">
                         <h2 class="text-2xl font-bold text-slate-800 mb-2">Thông tin cơ bản</h2>
-                        <p class="text-slate-500 text-sm">Hãy cho chúng tôi biết bạn là ai. Đây là bước đầu để em trở thành nhân sự chính thức của Tâm Đức trong tương lai </p>
+                        <p class="text-slate-500 text-sm">Hãy cho chúng tôi biết em là ai. Đây là bước đầu để em trở thành nhân sự chính thức của Tâm Đức trong tương lai </p>
                     </div>
 
                     <div class="space-y-5">
@@ -885,29 +885,53 @@
             const envChecked = document.querySelector('input[name="environment"]:checked');
             const envChoice = envChecked ? envChecked.value : '';
 
-            // Đóng gói dữ liệu thành FormData (Đã sắp xếp thứ tự ưu tiên)
-            const formData = new FormData();
-            formData.append("Thời gian nộp", new Date().toLocaleString('vi-VN'));
-            formData.append("Họ và Tên", document.getElementById('fullName').value);
-            formData.append("Số điện thoại", "'" + document.getElementById('phone').value); // Thêm dấu nháy để Google Sheet giữ nguyên số 0 ở đầu
-            formData.append("Trường THPT", schoolFinal);
-            formData.append("Các GV đang học", document.getElementById('currentTeachers').value);
-            formData.append("Facebook", document.getElementById('facebook').value || "Không có");
-            
-            formData.append("Cơ sở đang học", branchFinal);
-            formData.append("Vị trí ứng tuyển", role);
-            formData.append("Môn thế mạnh", subjectFinal);
-            formData.append("Cấp học mong muốn", gradeFinal);
-            
-            formData.append("Khung giờ rảnh hẹn TV", availableTimeStr);
-            
-            formData.append("Động lực", document.getElementById('q_motivation').value);
-            formData.append("Xử lý tình huống", (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') ? document.getElementById('q_situation_teaching').value : document.getElementById('q_situation_operation').value);
-            formData.append("Mục tiêu tương lai", document.getElementById('q_discipline').value);
-            formData.append("Lựa chọn môi trường", envChoice);
-            formData.append("Lý do chọn môi trường", document.getElementById('q_environment_reason').value);
+            // Định nghĩa thứ tự cột ưu tiên hiển thị trên Google Sheet
+            const orderedKeys = [
+                "Thời gian nộp",
+                "Họ và Tên",
+                "Số điện thoại",
+                "Facebook",
+                "Trường THPT",
+                "Cơ sở đang học",
+                "Các GV đang học",
+                "Vị trí ứng tuyển",
+                "Khung giờ rảnh hẹn TV",
+                "Môn thế mạnh",
+                "Cấp học mong muốn",
+                "Lựa chọn môi trường",
+                "Lý do chọn môi trường",
+                "Động lực",
+                "Xử lý tình huống",
+                "Mục tiêu tương lai"
+            ];
 
-            // Gửi dữ liệu bằng Fetch API
+            // Gom dữ liệu (Đã sắp xếp lại code cho dễ nhìn theo thứ tự trên)
+            const formDataObj = {
+                "Thời gian nộp": new Date().toLocaleString('vi-VN'),
+                "Họ và Tên": document.getElementById('fullName').value,
+                "Số điện thoại": "'" + document.getElementById('phone').value, // Dấu nháy để giữ số 0
+                "Facebook": document.getElementById('facebook').value || "Không có",
+                "Trường THPT": schoolFinal,
+                "Cơ sở đang học": branchFinal,
+                "Các GV đang học": document.getElementById('currentTeachers').value,
+                "Vị trí ứng tuyển": role,
+                "Khung giờ rảnh hẹn TV": availableTimeStr,
+                "Môn thế mạnh": subjectFinal,
+                "Cấp học mong muốn": gradeFinal,
+                "Lựa chọn môi trường": envChoice,
+                "Lý do chọn môi trường": document.getElementById('q_environment_reason').value,
+                "Động lực": document.getElementById('q_motivation').value,
+                "Xử lý tình huống": (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') ? document.getElementById('q_situation_teaching').value : document.getElementById('q_situation_operation').value,
+                "Mục tiêu tương lai": document.getElementById('q_discipline').value
+            };
+
+            // Đóng gói JSON
+            const payload = {
+                orderedKeys: orderedKeys,
+                formData: formDataObj
+            };
+
+            // Kiểm tra link API
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE' || GOOGLE_APP_SCRIPT_URL.trim() === '') {
                 alert("Bạn chưa cấu hình GOOGLE_APP_SCRIPT_URL. Vui lòng làm theo hướng dẫn để kết nối Google Sheet.");
                 btn.innerHTML = originalText;
@@ -915,9 +939,11 @@
                 return;
             }
 
+            // Gửi dữ liệu JSON bằng Fetch API (Giải quyết triệt để lỗi lộn xộn cột)
             fetch(GOOGLE_APP_SCRIPT_URL, {
                 method: 'POST',
-                body: formData
+                body: JSON.stringify(payload)
+                // Lưu ý: Không set Content-Type để tránh lỗi CORS
             })
             .then(response => {
                 // Hiện Success Modal
