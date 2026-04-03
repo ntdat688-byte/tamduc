@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuyển Dụng Tài Năng Trẻ | Hệ Thống Giáo Dục Tâm Đức</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#2563eb',   // Royal Blue
+                            indigo: '#4f46e5', // Indigo
+                            sky: '#0ea5e9',    // Sky Blue
+                        },
+                        accent: {
+                            amber: '#f59e0b',
+                            green: '#10b981',
+                            red: '#ef4444'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+                        'glow': '0 0 15px rgba(37, 99, 235, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom CSS */
+        body {
+            /* Background Xám xanh cực nhạt kết hợp họa tiết chấm bi mờ */
+            background-color: #f0f4f8;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+
+        /* Input Interactions */
+        .input-group i {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Khi input được focus: Đổi màu viền, Icon phồng to 1.25x và đổ bóng */
+        .input-group:focus-within i {
+            transform: scale(1.25);
+            filter: drop-shadow(0 4px 4px rgba(37, 99, 235, 0.3));
+            color: #2563eb; /* Royal Blue */
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            border-color: #2563eb;
+        }
+
+        /* Custom Scrollbar cho Textarea */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Step Transitions */
+        .step-container {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Radio/Checkbox */
+        .custom-radio:checked + div {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .custom-radio:checked + div .radio-icon {
+            color: #2563eb;
+            transform: scale(1.1);
+        }
+
+        /* Card Radio with Bouncy Tick Effect */
+        .card-radio-input:checked + div {
+            border-color: #2563eb;
+            background-color: rgba(239, 246, 255, 0.7);
+        }
+        .card-radio-input:checked + div .card-radio-text {
+            color: #2563eb;
+            font-weight: 700;
+        }
+        .card-radio-input:checked + div .card-radio-box {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        .card-radio-input:checked + div .card-radio-tick {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+        .card-radio-box {
+            transition: all 0.3s ease;
+        }
+        .card-radio-tick {
+            transform: scale(0.3) rotate(-45deg);
+            opacity: 0;
+            /* Hiệu ứng nảy (bouncy) khi tick */
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+</head>
+<body class="py-10 px-4 flex justify-center items-center text-slate-700">
+
+    <!-- Main Wrapper -->
+    <main class="w-full max-w-4xl relative">
+        
+        <!-- The Card -->
+        <div class="glass-card shadow-soft rounded-3xl overflow-hidden relative">
+            
+            <!-- Header Banner -->
+            <div class="bg-gradient-to-r from-brand-blue to-brand-indigo px-5 py-6 md:px-8 md:py-8 relative overflow-hidden text-white text-center md:text-left">
+                <!-- Subtle background pattern in header -->
+                <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex justify-center items-center shrink-0 border border-white/30 shadow-glow">
+                        <i class="fa-solid fa-graduation-cap text-3xl md:text-4xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-[10px] md:text-xs font-semibold tracking-wider uppercase mb-2">Chương trình tuyển nhân sự</span>
+                        <h1 class="text-2xl md:text-3xl font-bold tracking-tight mb-2">Hệ Thống Giáo Dục Tâm Đức</h1>
+                        <p class="text-blue-100 text-[13px] md:text-base font-medium mb-3 leading-relaxed">Đây không chỉ là một công việc làm thêm, đây là nơi bắt đầu sự nghiệp của bạn.</p>
+                        <div class="flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-3 text-[11px] md:text-sm font-medium">
+                            <span class="bg-accent-red/90 text-white px-2.5 py-1.5 rounded-lg shadow-sm"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Điền nghiêm túc - Trung thực</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation (Pill Shape) -->
+            <div class="px-4 sm:px-8 pt-6 sm:pt-8">
+                <div class="flex justify-between items-center relative">
+                    <!-- Progress Line -->
+                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-slate-100 -z-10 rounded-full"></div>
+                    <div id="progress-bar" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-brand-blue -z-10 rounded-full transition-all duration-500 w-0"></div>
+
+                    <!-- Tabs -->
+                    <div class="step-tab flex flex-col items-center gap-1 sm:gap-2 relative z-10" data-step="1">
+                        <div class="tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-gradient-to-r from-brand-blue to-brand-sky text-white flex justify-center items-center font-bold shadow-md transition-all duration-300">1</div>
+                        <span class="text-[10px] sm:text-xs font-semibold text-brand-blue text-center">Cá nhân</span>
+                    </div>
+                    <div class="step-tab flex flex-col items-center gap-1 sm:gap-2 relative z-10" data-step="2">
+                        <div class="tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-slate-100 text-slate-400 flex justify-center items-center font-bold transition-all duration-300">2</div>
+                        <span class="text-[10px] sm:text-xs font-semibold text-slate-400 text-center">Định hướng</span>
+                    </div>
+                    <div class="step-tab flex flex-col items-center gap-1 sm:gap-2 relative z-10" data-step="3">
+                        <div class="tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-slate-100 text-slate-400 flex justify-center items-center font-bold transition-all duration-300">3</div>
+                        <span class="text-[10px] sm:text-xs font-semibold text-slate-400 text-center">Tư duy</span>
+                    </div>
+                    <div class="step-tab flex flex-col items-center gap-1 sm:gap-2 relative z-10" data-step="4">
+                        <div class="tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-slate-100 text-slate-400 flex justify-center items-center font-bold transition-all duration-300">4</div>
+                        <span class="text-[10px] sm:text-xs font-semibold text-slate-400 text-center">Lịch Hẹn</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Content -->
+            <form id="recruitmentForm" class="p-5 md:p-8">
+                
+                <!-- STEP 1: THÔNG TIN CÁ NHÂN -->
+                <div id="step1" class="step-container active">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Thông tin cơ bản</h2>
+                        <p class="text-slate-500 text-sm">Hãy cho chúng tôi biết bạn là ai. Đây là bước đầu để em trở thành nhân sự chính thức của Tâm Đức trong tương lai </p>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="input-group relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Họ và Tên <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-regular fa-user absolute left-4 top-3.5 text-slate-400"></i>
+                                <input type="text" id="fullName" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="Nguyễn Văn A">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="input-group relative">
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Số điện thoại <span class="text-accent-red">*</span></label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-phone absolute left-4 top-3.5 text-slate-400"></i>
+                                    <input type="tel" id="phone" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="09xx xxx xxx">
+                                </div>
+                            </div>
+                            <div class="input-group relative">
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Các GV đang theo học tại Tâm Đức <span class="text-accent-red">*</span></label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-chalkboard-user absolute left-4 top-3.5 text-slate-400"></i>
+                                    <input type="text" id="currentTeachers" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="VD: Anh Nguyễn Văn A, Chị Nguyễn Thị B...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Trường THPT đang theo học <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-school absolute left-4 top-3.5 text-slate-400"></i>
+                                <select id="schoolSelect" required onchange="toggleOtherInput('schoolSelect', 'schoolOther')" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Chọn trường THPT của bạn...</option>
+                                    <optgroup label="TP. Hồ Chí Minh">
+                                        <option value="THPT DĨ AN - TPHCM">THPT DĨ AN - TPHCM</option>
+                                        <option value="THPT NGUYỄN THỊ MINH KHAI - TPHCM">THPT NGUYỄN THỊ MINH KHAI - TPHCM</option>
+                                        <option value="THPT NGUYỄN AN NINH - TPHCM">THPT NGUYỄN AN NINH - TPHCM</option>
+                                        <option value="THPT BÌNH AN - TPHCM">THPT BÌNH AN - TPHCM</option>
+                                        <option value="THPT HOA SEN - TPHCM">THPT HOA SEN - TPHCM</option>
+                                        <option value="THPT PHAN CHU TRINH - TPHCM">THPT PHAN CHU TRINH - TPHCM</option>
+                                        <option value="TTGDTX DĨ AN - TPHCM">TTGDTX DĨ AN - TPHCM</option>
+                                        <option value="CĐ ĐỒNG AN - TPHCM">CĐ ĐỒNG AN - TPHCM</option>
+                                        <option value="TC BÁCH KHOA - TPHCM">TC BÁCH KHOA - TPHCM</option>
+                                        <option value="THPT THÁI HÒA - TPHCM">THPT THÁI HÒA - TPHCM</option>
+                                        <option value="THPT TÂN PHƯỚC KHÁNH - TPHCM">THPT TÂN PHƯỚC KHÁNH - TPHCM</option>
+                                        <option value="THPT LINH TRUNG - TPHCM">THPT LINH TRUNG - TPHCM</option>
+                                        <option value="THPT ĐÀO SƠN TÂY - TPHCM">THPT ĐÀO SƠN TÂY - TPHCM</option>
+                                        <option value="THPT THỦ ĐỨC - TPHCM">THPT THỦ ĐỨC - TPHCM</option>
+                                        <option value="THPT TAM PHÚ - TPHCM">THPT TAM PHÚ - TPHCM</option>
+                                        <option value="THPT HIỆP BÌNH - TPHCM">THPT HIỆP BÌNH - TPHCM</option>
+                                        <option value="THPT LONG TRƯỜNG - TPHCM">THPT LONG TRƯỜNG - TPHCM</option>
+                                        <option value="TTGDTX THỦ ĐỨC - TPHCM">TTGDTX THỦ ĐỨC - TPHCM</option>
+                                        <option value="THPT NGUYỄN TRÃI - TPHCM">THPT NGUYỄN TRÃI - TPHCM</option>
+                                        <option value="THPT LÝ THÁI TỔ - TPHCM">THPT LÝ THÁI TỔ - TPHCM</option>
+                                        <option value="THPT TRẦN VĂN ƠN - TPHCM">THPT TRẦN VĂN ƠN - TPHCM</option>
+                                        <option value="THPT TRỊNH HOÀI ĐỨC - TPHCM">THPT TRỊNH HOÀI ĐỨC - TPHCM</option>
+                                        <option value="TTGDTX THUẬN AN - TPHCM">TTGDTX THUẬN AN - TPHCM</option>
+                                        <option value="THPT VÕ MINH ĐỨC - TPHCM">THPT VÕ MINH ĐỨC - TPHCM</option>
+                                        <option value="THPT CHUYÊN HÙNG VƯƠNG - TPHCM">THPT CHUYÊN HÙNG VƯƠNG - TPHCM</option>
+                                    </optgroup>
+                                    <optgroup label="Đồng Nai">
+                                        <option value="THPT LONG BÌNH TÂN - ĐỒNG NAI">THPT LONG BÌNH TÂN - ĐỒNG NAI</option>
+                                        <option value="THPT TRẤN BIÊN - ĐỒNG NAI">THPT TRẤN BIÊN - ĐỒNG NAI</option>
+                                        <option value="THPT VĨNH CỬU - ĐỒNG NAI">THPT VĨNH CỬU - ĐỒNG NAI</option>
+                                        <option value="THPT THANH BÌNH - ĐỒNG NAI">THPT THANH BÌNH - ĐỒNG NAI</option>
+                                        <option value="THPT ĐOÀN KẾT - ĐỒNG NAI">THPT ĐOÀN KẾT - ĐỒNG NAI</option>
+                                        <option value="THPT TÔN ĐỨC THẮNG - ĐỒNG NAI">THPT TÔN ĐỨC THẮNG - ĐỒNG NAI</option>
+                                        <option value="THPT LONG THÀNH - ĐỒNG NAI">THPT LONG THÀNH - ĐỒNG NAI</option>
+                                        <option value="THPT PHƯỚC THIỀN - ĐỒNG NAI">THPT PHƯỚC THIỀN - ĐỒNG NAI</option>
+                                        <option value="THPT NGUYỄN ĐÌNH CHIỂU - ĐỒNG NAI">THPT NGUYỄN ĐÌNH CHIỂU - ĐỒNG NAI</option>
+                                    </optgroup>
+                                    <optgroup label="Tỉnh thành khác">
+                                        <option value="TH THSP - AN GIANG">TH THSP - AN GIANG</option>
+                                        <option value="THPT CHUYÊN THOẠI NGỌC HẦU - AN GIANG">THPT CHUYÊN THOẠI NGỌC HẦU - AN GIANG</option>
+                                        <option value="TTGDTX ĐÀ LẠT - LÂM ĐỒNG">TTGDTX ĐÀ LẠT - LÂM ĐỒNG</option>
+                                        <option value="THPT BẢO LỘC - LÂM ĐỒNG">THPT BẢO LỘC - LÂM ĐỒNG</option>
+                                        <option value="THPT CHUYÊN BẢO LỘC - LÂM ĐỒNG">THPT CHUYÊN BẢO LỘC - LÂM ĐỒNG</option>
+                                        <option value="THPT PHAN THIẾT - LÂM ĐỒNG">THPT PHAN THIẾT - LÂM ĐỒNG</option>
+                                    </optgroup>
+                                    <option value="other">Mục khác (Tự điền)...</option>
+                                </select>
+                                <div class="absolute right-4 top-3.5 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <input type="text" id="schoolOther" class="hidden mt-3 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="Nhập tên trường của bạn...">
+                        </div>
+
+                        <div class="input-group relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Link Facebook cá nhân <span class="text-slate-400 font-normal ml-1">(Không bắt buộc)</span></label>
+                            <div class="relative">
+                                <i class="fa-brands fa-facebook absolute left-4 top-3.5 text-slate-400"></i>
+                                <input type="url" id="facebook" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="https://facebook.com/yourprofile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: ĐỊNH HƯỚNG CÔNG VIỆC -->
+                <div id="step2" class="step-container">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Định hướng công việc & Cơ sở</h2>
+                        <p class="text-slate-500 text-sm">Hãy cho chúng tôi biết bạn đang học tại cơ sở nào và mong muốn ứng tuyển vị trí gì.</p>
+                    </div>
+
+                    <div class="space-y-8 mt-6">
+                        <!-- Chọn Cơ sở -->
+                        <div class="input-group relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Em đang học tại cơ sở thuộc khu vực nào trong hệ thống Tâm Đức? <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-location-dot absolute left-4 top-3.5 text-slate-400"></i>
+                                <select id="branchSelect" required onchange="toggleOtherInput('branchSelect', 'branchOther')" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Chọn cơ sở...</option>
+                                    <optgroup label="TP. Hồ Chí Minh">
+                                        <option value="DĨ AN - TPHCM">DĨ AN - TPHCM</option>
+                                        <option value="TÂN UYÊN - TPHCM">TÂN UYÊN - TPHCM</option>
+                                        <option value="THUẬN AN - TPHCM">THUẬN AN - TPHCM</option>
+                                        <option value="THỦ DẦU MỘT - TPHCM">THỦ DẦU MỘT - TPHCM</option>
+                                        <option value="THỦ ĐỨC - TPHCM">THỦ ĐỨC - TPHCM</option>
+                                        <option value="TÂN BÌNH - TPHCM">TÂN BÌNH - TPHCM</option>
+                                    </optgroup>
+                                    <optgroup label="Đồng Nai">
+                                        <option value="LONG BÌNH TÂN - ĐỒNG NAI">LONG BÌNH TÂN - ĐỒNG NAI</option>
+                                        <option value="LONG BÌNH - ĐỒNG NAI">LONG BÌNH - ĐỒNG NAI</option>
+                                        <option value="VĨNH CỬU - ĐỒNG NAI">VĨNH CỬU - ĐỒNG NAI</option>
+                                        <option value="LONG THÀNH - ĐỒNG NAI">LONG THÀNH - ĐỒNG NAI</option>
+                                        <option value="TÂN PHÚ - ĐỒNG NAI">TÂN PHÚ - ĐỒNG NAI</option>
+                                        <option value="ĐỊNH QUÁN - ĐỒNG NAI">ĐỊNH QUÁN - ĐỒNG NAI</option>
+                                        <option value="XUÂN LỘC - ĐỒNG NAI">XUÂN LỘC - ĐỒNG NAI</option>
+                                    </optgroup>
+                                    <optgroup label="Tỉnh thành khác">
+                                        <option value="LONG XUYÊN - AN GIANG">LONG XUYÊN - AN GIANG</option>
+                                        <option value="ĐÀ LẠT - LÂM ĐỒNG">ĐÀ LẠT - LÂM ĐỒNG</option>
+                                        <option value="BẢO LỘC - LÂM ĐỒNG">BẢO LỘC - LÂM ĐỒNG</option>
+                                        <option value="PHAN THIẾT - LÂM ĐỒNG">PHAN THIẾT - LÂM ĐỒNG</option>
+                                    </optgroup>
+                                    <option value="other">Mục khác (Tự điền)...</option>
+                                </select>
+                                <div class="absolute right-4 top-3.5 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <input type="text" id="branchOther" class="hidden mt-3 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="Nhập khu vực cơ sở của bạn...">
+                        </div>
+
+                        <!-- Chọn Công việc -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-3">Em muốn đăng kí công việc nào? <span class="text-accent-red">*</span></label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="role" value="TRỢ GIẢNG ĐÀO TẠO" class="custom-radio sr-only" checked onchange="handleRoleChange()">
+                                    <div class="px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-brand-blue/50 transition-all duration-300 h-full bg-white text-center flex flex-col justify-center">
+                                        <h3 class="text-sm font-bold text-slate-800">Trợ giảng Đào tạo</h3>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="role" value="TRỢ GIẢNG PART - TIME" class="custom-radio sr-only" onchange="handleRoleChange()">
+                                    <div class="px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-brand-blue/50 transition-all duration-300 h-full bg-white text-center flex flex-col justify-center">
+                                        <h3 class="text-sm font-bold text-slate-800">Trợ giảng Part-time</h3>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="role" value="GIỮ XE" class="custom-radio sr-only" onchange="handleRoleChange()">
+                                    <div class="px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-brand-blue/50 transition-all duration-300 h-full bg-white text-center flex flex-col justify-center">
+                                        <h3 class="text-sm font-bold text-slate-800">Giữ xe</h3>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="role" value="CỬA HÀNG TIỆN LỢI" class="custom-radio sr-only" onchange="handleRoleChange()">
+                                    <div class="px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-brand-blue/50 transition-all duration-300 h-full bg-white text-center flex flex-col justify-center">
+                                        <h3 class="text-sm font-bold text-slate-800">Cửa hàng tiện lợi</h3>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="role" value="THU NGÂN" class="custom-radio sr-only" onchange="handleRoleChange()">
+                                    <div class="px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-brand-blue/50 transition-all duration-300 h-full bg-white text-center flex flex-col justify-center">
+                                        <h3 class="text-sm font-bold text-slate-800">Thu ngân</h3>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Khối dành riêng cho Trợ Giảng (Hiện/Ẩn dựa trên JS) -->
+                        <div id="teachingExtras" class="space-y-6 bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+                            <h3 class="font-bold text-brand-blue text-sm mb-2"><i class="fa-solid fa-circle-info mr-1"></i> Dành riêng cho vị trí Trợ Giảng</h3>
+                            
+                            <div class="input-group relative">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Môn học đang là thế mạnh hiện tại của em? <span class="text-accent-red">*</span></label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-book absolute left-4 top-3.5 text-slate-400"></i>
+                                    <select id="subjectSelect" onchange="toggleOtherInput('subjectSelect', 'subjectOther')" class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl outline-none text-slate-700 appearance-none cursor-pointer">
+                                        <option value="" disabled selected>Chọn môn học...</option>
+                                        <option value="TOÁN">TOÁN</option>
+                                        <option value="VẬT LÝ">VẬT LÝ</option>
+                                        <option value="HÓA HỌC">HÓA HỌC</option>
+                                        <option value="TIẾNG ANH">TIẾNG ANH</option>
+                                        <option value="NGỮ VĂN">NGỮ VĂN</option>
+                                        <option value="SINH">SINH</option>
+                                        <option value="KHOA HỌC TỰ NHIÊN (LÝ HÓA SINH)">KHOA HỌC TỰ NHIÊN (LÝ HÓA SINH)</option>
+                                        <option value="other">Mục khác (Tự điền)...</option>
+                                    </select>
+                                    <div class="absolute right-4 top-3.5 text-slate-400 pointer-events-none">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <input type="text" id="subjectOther" class="hidden mt-3 w-full px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="Nhập môn học thế mạnh của em...">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-3">Cấp học em mong muốn làm việc? <span class="text-accent-red">*</span></label>
+                                <div class="space-y-3">
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="radio" name="gradeLevel" value="CẤP 2 (KHỐI 6-7-8-9)" class="mt-0.5 w-4 h-4 text-brand-blue focus:ring-brand-blue">
+                                        <span class="text-sm text-slate-700">CẤP 2 (KHỐI 6-7-8-9)</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="radio" name="gradeLevel" value="CẤP 3 (KHỐI 10-11-12)" class="mt-0.5 w-4 h-4 text-brand-blue focus:ring-brand-blue">
+                                        <span class="text-sm text-slate-700">CẤP 3 (KHỐI 10-11-12)</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="radio" name="gradeLevel" value="CẤP 1 (KHỐI 1-2-3-4-5)" class="mt-0.5 w-4 h-4 text-brand-blue focus:ring-brand-blue">
+                                        <span class="text-sm text-slate-700">CẤP 1 (KHỐI 1-2-3-4-5) - Lựa chọn này dành cho các bạn có thế mạnh Tiếng Anh hướng dạy trẻ em</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: THỬ THÁCH TƯ DUY (SÀNG LỌC) -->
+                <div id="step3" class="step-container">
+                    <div class="mb-6 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-2">Thử thách Tư duy</h2>
+                            <p class="text-slate-500 text-sm">Đây là phần quan trọng nhất. Hãy trả lời chân thật theo cách nghĩ của bạn. Không có đúng/sai tuyệt đối.</p>
+                        </div>
+                        <div class="hidden md:flex w-12 h-12 bg-accent-amber/10 rounded-full justify-center items-center text-accent-amber">
+                            <i class="fa-solid fa-brain text-xl"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Q1: Động lực -->
+                        <div class="input-group relative bg-white p-1 rounded-xl">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">1. Vì sao bạn muốn gia nhập Tâm Đức thay vì một công việc part-time khác (như phục vụ, bán hàng...)? <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-fire absolute left-4 top-3.5 text-slate-400"></i>
+                                <textarea id="q_motivation" required rows="3" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 resize-y" placeholder="Chia sẻ động lực thực sự của bạn..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Q2: Phân nhánh theo Role -->
+                        <!-- Nhánh Trợ giảng -->
+                        <div id="logic_teaching" class="input-group relative bg-white p-1 rounded-xl">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">2. (Tình huống) Khi làm việc nhóm, nếu có người làm chưa tốt và ảnh hưởng đến kết quả chung, em sẽ làm gì? Bạn sẽ xử lý thế nào? <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-scale-balanced absolute left-4 top-3.5 text-slate-400"></i>
+                                <textarea id="q_situation_teaching" rows="3" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 resize-y" placeholder="Cách bạn giải quyết vấn đề này..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Nhánh Vận hành -->
+                        <div id="logic_operation" class="input-group relative bg-white p-1 rounded-xl hidden">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">2. (Tình huống) Có một phụ huynh đến trung tâm và phàn nàn khá gay gắt về dịch vụ ngay tại sảnh đang có đông người. Bạn là người đầu tiên tiếp xúc, bạn xử lý thế nào? <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-comments absolute left-4 top-3.5 text-slate-400"></i>
+                                <textarea id="q_situation_operation" rows="3" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 resize-y" placeholder="Cách bạn giao tiếp và xử lý khủng hoảng..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Q3: Vượt khó -->
+                        <div class="input-group relative bg-white p-1 rounded-xl">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">3. Em mong muốn mình sẽ trở thành người như thế nào trong 2–3 năm tới? <span class="text-accent-red">*</span></label>
+                            <div class="relative">
+                                <i class="fa-solid fa-mountain absolute left-4 top-3.5 text-slate-400"></i>
+                                <textarea id="q_discipline" required rows="3" class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 resize-y" placeholder="Mục tiêu định hướng tương lai..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: CAM KẾT -->
+                <div id="step4" class="step-container">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Thời gian & Cam kết</h2>
+                        <p class="text-slate-500 text-sm">Chúng tôi tìm kiếm những người đồng hành, cùng nhau xây dựng sự nghiệp.</p>
+                    </div>
+
+                    <div class="space-y-8">
+                        <!-- Câu hỏi môi trường -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm transition-colors duration-300" id="envContainer">
+                            <label class="block text-sm font-semibold text-slate-700 mb-4">Nếu được chọn giữa 2 môi trường làm việc, em sẽ chọn: <span class="text-accent-red">*</span></label>
+                            <div class="grid grid-cols-1 gap-4 mb-4">
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="environment" value="Một môi trường dễ dàng, ít áp lực" class="card-radio-input sr-only">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/50 transition-all duration-300 h-full bg-slate-50 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Một môi trường dễ dàng, ít áp lực</span>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="environment" value="Môi trường nhiều thử thách, áp lực" class="card-radio-input sr-only">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/50 transition-all duration-300 h-full bg-slate-50 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Môi trường nhiều thử thách, áp lực</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-group relative">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Vì sao em lại chọn như vậy? <span class="text-accent-red">*</span></label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-pen absolute left-4 top-3.5 text-slate-400"></i>
+                                    <textarea id="q_environment_reason" required rows="2" class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 resize-y" placeholder="Hãy giải thích ngắn gọn lý do của em..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chọn thời gian -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm transition-colors duration-300" id="timeContainer">
+                            <label class="block text-sm font-semibold text-slate-700 mb-4">Để sắp xếp 1 buổi phỏng vấn, em thấy khung giờ nào thường thuận tiện nhất cho mình? (Chọn 1) <span class="text-accent-red">*</span></label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="availableTime" value="Chiều (T2 - T6)" class="card-radio-input sr-only" onchange="toggleTimeOther()">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/40 transition-all duration-300 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Chiều (T2 - T6)</span>
+                                    </div>
+                                </label>
+                                
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="availableTime" value="Tối (Sau 17h, T2-T6)" class="card-radio-input sr-only" onchange="toggleTimeOther()">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/40 transition-all duration-300 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Tối (Sau 17h, T2-T6)</span>
+                                    </div>
+                                </label>
+
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="availableTime" value="Chiều/Tối (T7, CN)" class="card-radio-input sr-only" onchange="toggleTimeOther()">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/40 transition-all duration-300 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Chiều/Tối (T7, CN)</span>
+                                    </div>
+                                </label>
+
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="availableTime" value="Linh hoạt (Đặc biệt rảnh cuối tuần)" class="card-radio-input sr-only" onchange="toggleTimeOther()">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/40 transition-all duration-300 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Linh hoạt (Đặc biệt rảnh cuối tuần)</span>
+                                    </div>
+                                </label>
+
+                                <label class="relative cursor-pointer group md:col-span-2">
+                                    <input type="radio" name="availableTime" id="timeOtherRadio" value="other" class="card-radio-input sr-only" onchange="toggleTimeOther()">
+                                    <div class="p-4 border-2 border-slate-200 rounded-xl group-hover:border-brand-blue/40 transition-all duration-300 flex items-center gap-3">
+                                        <div class="card-radio-box w-5 h-5 rounded-full border-2 border-slate-300 flex justify-center items-center bg-white shrink-0 relative overflow-hidden">
+                                            <i class="fa-solid fa-check text-white text-[10px] card-radio-tick absolute"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-slate-700 card-radio-text transition-all">Khung giờ tùy ý (Ghi chú cụ thể)</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <input type="text" id="availableTimeOther" class="hidden mt-3 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-700 placeholder-slate-400" placeholder="VD: Em rảnh từ 14h-16h Thứ 3 và chiều Chủ Nhật...">
+                        </div>
+
+                        <div class="p-4 bg-brand-blue/5 rounded-xl border border-brand-blue/10 flex gap-4 mt-6">
+                            <i class="fa-solid fa-circle-info text-brand-blue text-xl mt-0.5"></i>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                <strong>Lưu ý:</strong> Bằng việc nhấn "Gửi Đơn Ứng Tuyển", bạn xác nhận những thông tin trên là trung thực. Hội đồng tuyển dụng Tâm Đức sẽ đánh giá cẩn thận và phản hồi bạn qua Email/SĐT trong vòng 3-5 ngày làm việc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation Buttons -->
+                <div class="mt-8 flex flex-col-reverse md:flex-row justify-between items-center gap-4 border-t border-slate-100 pt-6">
+                    <button type="button" id="prevBtn" class="hidden w-full md:w-auto px-6 py-3 md:py-2.5 text-slate-500 font-medium hover:text-slate-800 bg-slate-100 md:bg-transparent rounded-xl md:rounded-none transition-colors flex items-center justify-center gap-2" onclick="changeStep(-1)">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại
+                    </button>
+                    
+                    <div class="hidden md:block flex-grow"></div> <!-- Spacer for desktop -->
+
+                    <button type="button" id="nextBtn" class="w-full md:w-auto px-8 py-3.5 md:py-3 bg-slate-800 text-white font-bold rounded-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2" onclick="changeStep(1)">
+                        Tiếp tục <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <button type="submit" id="submitBtn" class="hidden w-full md:w-auto px-8 py-3.5 md:py-3 bg-gradient-to-r from-brand-blue to-brand-sky text-white font-bold rounded-xl hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-blue/30 transition-all duration-300 flex items-center justify-center gap-2">
+                        Gửi Đơn Ứng Tuyển <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex justify-center items-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center transform scale-90 transition-transform duration-300" id="successModalContent">
+            <div class="w-20 h-20 bg-accent-green/10 rounded-full flex justify-center items-center mx-auto mb-6 text-accent-green">
+                <i class="fa-solid fa-check text-4xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-2">Tuyệt vời!</h3>
+            <p class="text-slate-500 mb-6">Đơn ứng tuyển của bạn đã được ghi nhận. Tâm Đức đánh giá cao sự đầu tư của bạn cho hồ sơ này.</p>
+            <p class="text-sm text-slate-400 mb-8">Thông tin của bạn đã được gửi thẳng đến hệ thống nhân sự (Google Sheet).</p>
+            <button onclick="closeModal()" class="w-full py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors">
+                Trở về trang chủ
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Toggle text inputs for "Mục khác"
+        function toggleOtherInput(selectId, inputId) {
+            const select = document.getElementById(selectId);
+            const input = document.getElementById(inputId);
+            if (select.value === 'other') {
+                input.classList.remove('hidden');
+                input.setAttribute('required', 'true');
+            } else {
+                input.classList.add('hidden');
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        }
+        
+        // Toggle text input for custom available time
+        function toggleTimeOther() {
+            const otherRadio = document.getElementById('timeOtherRadio');
+            const otherInput = document.getElementById('availableTimeOther');
+            if (otherRadio && otherRadio.checked) {
+                otherInput.classList.remove('hidden');
+                otherInput.setAttribute('required', 'true');
+            } else {
+                otherInput.classList.add('hidden');
+                otherInput.removeAttribute('required');
+                otherInput.value = '';
+            }
+        }
+        
+        // Handle Logic Branching
+        function handleRoleChange() {
+            const roleInput = document.querySelector('input[name="role"]:checked');
+            if(!roleInput) return;
+            const role = roleInput.value;
+            
+            const qTeaching = document.getElementById('logic_teaching');
+            const qOperation = document.getElementById('logic_operation');
+            const txtTeaching = document.getElementById('q_situation_teaching');
+            const txtOperation = document.getElementById('q_situation_operation');
+
+            // Extras cho Trợ giảng
+            const teachingExtras = document.getElementById('teachingExtras');
+            const subjectSelect = document.getElementById('subjectSelect');
+            const gradeRadios = document.querySelectorAll('input[name="gradeLevel"]');
+
+            if (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') {
+                qTeaching.classList.remove('hidden');
+                qOperation.classList.add('hidden');
+                txtTeaching.setAttribute('required', 'true');
+                txtOperation.removeAttribute('required');
+                
+                teachingExtras.classList.remove('hidden');
+                subjectSelect.setAttribute('required', 'true');
+                gradeRadios.forEach(r => r.setAttribute('required', 'true'));
+            } else {
+                qOperation.classList.remove('hidden');
+                qTeaching.classList.add('hidden');
+                txtOperation.setAttribute('required', 'true');
+                txtTeaching.removeAttribute('required');
+                
+                teachingExtras.classList.add('hidden');
+                subjectSelect.removeAttribute('required');
+                gradeRadios.forEach(r => r.removeAttribute('required'));
+            }
+        }
+
+        // Khởi tạo logic ban đầu
+        handleRoleChange();
+
+        // Validate Form by Step
+        function validateStep(step) {
+            const currentContainer = document.getElementById(`step${step}`);
+            const inputs = currentContainer.querySelectorAll('input[required], textarea[required], select[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                // Bỏ qua radio vì kiểm tra radio cần logic check mảng riêng
+                if (input.type !== 'radio' && input.type !== 'checkbox') {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('border-accent-red', 'bg-red-50');
+                        // Gỡ class lỗi khi người dùng gõ
+                        input.addEventListener('input', function() {
+                            this.classList.remove('border-accent-red', 'bg-red-50');
+                        }, {once: true});
+                    }
+                }
+            });
+
+            // Validate riêng cho Step 4 (Radio groups)
+            if (step === 4) {
+                const envChecked = document.querySelector('input[name="environment"]:checked');
+                const envContainer = document.getElementById('envContainer');
+                if (!envChecked) {
+                    isValid = false;
+                    envContainer.classList.add('border-accent-red');
+                    const radios = document.querySelectorAll('input[name="environment"]');
+                    radios.forEach(r => r.addEventListener('change', () => envContainer.classList.remove('border-accent-red'), {once: true}));
+                }
+
+                const timeChecked = document.querySelector('input[name="availableTime"]:checked');
+                const timeContainer = document.getElementById('timeContainer');
+                if (!timeChecked) {
+                    isValid = false;
+                    timeContainer.classList.add('border', 'border-accent-red');
+                    const radios = document.querySelectorAll('input[name="availableTime"]');
+                    radios.forEach(r => r.addEventListener('change', () => timeContainer.classList.remove('border', 'border-accent-red'), {once: true}));
+                }
+            }
+
+            if(!isValid) {
+                // Tạo hiệu ứng rung nhẹ (shake)
+                currentContainer.style.transform = 'translateX(-5px)';
+                setTimeout(() => currentContainer.style.transform = 'translateX(5px)', 50);
+                setTimeout(() => currentContainer.style.transform = 'translateX(-5px)', 100);
+                setTimeout(() => currentContainer.style.transform = 'translateX(0)', 150);
+            }
+
+            return isValid;
+        }
+
+        // Change Step Logic
+        function changeStep(n) {
+            if (n === 1 && !validateStep(currentStep)) return;
+
+            // Ẩn step hiện tại
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Cập nhật currentStep
+            currentStep += n;
+
+            // Hiển thị step mới
+            document.getElementById(`step${currentStep}`).classList.add('active');
+
+            // Cập nhật giao diện Nút bấm & Tabs
+            updateUI();
+        }
+
+        function updateUI() {
+            // Cập nhật Buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (currentStep === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentStep === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+
+            // Cập nhật Tabs và Progress Bar
+            const tabs = document.querySelectorAll('.step-tab');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Tính toán % progress
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            tabs.forEach((tab, index) => {
+                const stepNum = index + 1;
+                const pill = tab.querySelector('.tab-pill');
+                const text = tab.querySelector('span');
+
+                if (stepNum <= currentStep) {
+                    // Active / Completed
+                    pill.className = 'tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-gradient-to-r from-brand-blue to-brand-sky text-white flex justify-center items-center font-bold shadow-md transition-all duration-300';
+                    text.className = 'text-[10px] sm:text-xs font-semibold text-brand-blue text-center';
+                } else {
+                    // Inactive
+                    pill.className = 'tab-pill w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-slate-100 text-slate-400 flex justify-center items-center font-bold transition-all duration-300';
+                    text.className = 'text-[10px] sm:text-xs font-semibold text-slate-400 text-center';
+                }
+            });
+        }
+
+        // --- CẤU HÌNH GOOGLE SHEET APP SCRIPT URL TẠI ĐÂY ---
+        // Bạn sẽ thay thế chuỗi trống '' bên dưới bằng URL lấy được từ Bước 5 trong hướng dẫn
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztTvLuA90MZnXcCs7iBYs4tydhxUL9TOPwuqzPWJB5jXMWsjrP72JPr0UalQZ01bdK/exec';
+
+        // Handle Form Submission (Gửi lên Google Sheet)
+        document.getElementById('recruitmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!validateStep(currentStep)) return;
+
+            // Hiệu ứng loading trên nút Submit
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi dữ liệu...';
+            btn.disabled = true;
+
+            // Xử lý dữ liệu "Mục khác" (Other)
+            const getSelectVal = (selectId, otherId) => {
+                const el = document.getElementById(selectId);
+                if(!el) return '';
+                return el.value === 'other' ? document.getElementById(otherId).value : el.value;
+            };
+
+            const role = document.querySelector('input[name="role"]:checked').value;
+            const schoolFinal = getSelectVal('schoolSelect', 'schoolOther');
+            const branchFinal = getSelectVal('branchSelect', 'branchOther');
+            
+            let subjectFinal = 'Không áp dụng';
+            let gradeFinal = 'Không áp dụng';
+            if (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') {
+                subjectFinal = getSelectVal('subjectSelect', 'subjectOther');
+                const gradeEl = document.querySelector('input[name="gradeLevel"]:checked');
+                gradeFinal = gradeEl ? gradeEl.value : '';
+            }
+
+            // Thu thập Thời gian rảnh & Môi trường từ Radio
+            const timeChecked = document.querySelector('input[name="availableTime"]:checked');
+            let availableTimeStr = 'Chưa chọn';
+            if (timeChecked) {
+                availableTimeStr = timeChecked.value === 'other' ? document.getElementById('availableTimeOther').value : timeChecked.value;
+            }
+            
+            const envChecked = document.querySelector('input[name="environment"]:checked');
+            const envChoice = envChecked ? envChecked.value : '';
+
+            // Đóng gói dữ liệu thành FormData
+            const formData = new FormData();
+            formData.append("Họ và Tên", document.getElementById('fullName').value);
+            formData.append("Số điện thoại", "'" + document.getElementById('phone').value); // Thêm dấu nháy để Google Sheet giữ nguyên số 0 ở đầu
+            formData.append("Trường THPT", schoolFinal);
+            formData.append("Các GV đang học", document.getElementById('currentTeachers').value);
+            formData.append("Facebook", document.getElementById('facebook').value || "Không có");
+            formData.append("Cơ sở đang học", branchFinal);
+            formData.append("Vị trí ứng tuyển", role);
+            formData.append("Môn thế mạnh", subjectFinal);
+            formData.append("Cấp học mong muốn", gradeFinal);
+            formData.append("Động lực", document.getElementById('q_motivation').value);
+            formData.append("Xử lý tình huống", (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') ? document.getElementById('q_situation_teaching').value : document.getElementById('q_situation_operation').value);
+            formData.append("Mục tiêu tương lai", document.getElementById('q_discipline').value);
+            formData.append("Lựa chọn môi trường", envChoice);
+            formData.append("Lý do chọn môi trường", document.getElementById('q_environment_reason').value);
+            formData.append("Khung giờ rảnh hẹn TV", availableTimeStr);
+            formData.append("Thời gian nộp", new Date().toLocaleString('vi-VN'));
+
+            // Gửi dữ liệu bằng Fetch API
+            if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE' || GOOGLE_APP_SCRIPT_URL.trim() === '') {
+                alert("Bạn chưa cấu hình GOOGLE_APP_SCRIPT_URL. Vui lòng làm theo hướng dẫn để kết nối Google Sheet.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+
+            fetch(GOOGLE_APP_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Hiện Success Modal
+                const modal = document.getElementById('successModal');
+                const modalContent = document.getElementById('successModalContent');
+                
+                modal.classList.remove('hidden');
+                void modal.offsetWidth; // Triggers reflow
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90');
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert("Có lỗi xảy ra khi gửi dữ liệu. Vui lòng thử lại sau.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        });
+
+        // Đóng Modal
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            const modalContent = document.getElementById('successModalContent');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-90');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset form
+                document.getElementById('recruitmentForm').reset();
+                currentStep = 1;
+                updateUI();
+                document.getElementById('step1').classList.add('active');
+                for(let i=2; i<=4; i++) {
+                    document.getElementById(`step${i}`).classList.remove('active');
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
