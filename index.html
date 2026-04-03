@@ -885,24 +885,27 @@
             const envChecked = document.querySelector('input[name="environment"]:checked');
             const envChoice = envChecked ? envChecked.value : '';
 
-            // Đóng gói dữ liệu thành FormData
+            // Đóng gói dữ liệu thành FormData (Đã sắp xếp thứ tự ưu tiên)
             const formData = new FormData();
+            formData.append("Thời gian nộp", new Date().toLocaleString('vi-VN'));
             formData.append("Họ và Tên", document.getElementById('fullName').value);
             formData.append("Số điện thoại", "'" + document.getElementById('phone').value); // Thêm dấu nháy để Google Sheet giữ nguyên số 0 ở đầu
             formData.append("Trường THPT", schoolFinal);
             formData.append("Các GV đang học", document.getElementById('currentTeachers').value);
             formData.append("Facebook", document.getElementById('facebook').value || "Không có");
+            
             formData.append("Cơ sở đang học", branchFinal);
             formData.append("Vị trí ứng tuyển", role);
             formData.append("Môn thế mạnh", subjectFinal);
             formData.append("Cấp học mong muốn", gradeFinal);
+            
+            formData.append("Khung giờ rảnh hẹn TV", availableTimeStr);
+            
             formData.append("Động lực", document.getElementById('q_motivation').value);
             formData.append("Xử lý tình huống", (role === 'TRỢ GIẢNG ĐÀO TẠO' || role === 'TRỢ GIẢNG PART - TIME') ? document.getElementById('q_situation_teaching').value : document.getElementById('q_situation_operation').value);
             formData.append("Mục tiêu tương lai", document.getElementById('q_discipline').value);
             formData.append("Lựa chọn môi trường", envChoice);
             formData.append("Lý do chọn môi trường", document.getElementById('q_environment_reason').value);
-            formData.append("Khung giờ rảnh hẹn TV", availableTimeStr);
-            formData.append("Thời gian nộp", new Date().toLocaleString('vi-VN'));
 
             // Gửi dữ liệu bằng Fetch API
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE' || GOOGLE_APP_SCRIPT_URL.trim() === '') {
